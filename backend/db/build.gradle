@@ -1,0 +1,16 @@
+dependencies {
+    // mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
