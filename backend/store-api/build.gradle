@@ -3,7 +3,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
     implementation project(':db')
+    implementation project(':common')
 }
 
 test {
