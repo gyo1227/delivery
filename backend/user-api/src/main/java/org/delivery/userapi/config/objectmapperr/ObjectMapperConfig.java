@@ -1,4 +1,4 @@
-package org.delivery.storeapi.config;
+package org.delivery.userapi.config.objectmapperr;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

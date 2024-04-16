@@ -1,4 +1,4 @@
-package org.delivery.storeapi.config;
+package org.delivery.storeapi.config.jpa;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
