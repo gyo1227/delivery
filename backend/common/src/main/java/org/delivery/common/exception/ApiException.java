@@ -1,29 +1,35 @@
 package org.delivery.common.exception;
 
 import lombok.Getter;
-import org.delivery.common.error.ErrorCode;
+import org.delivery.common.error.ErrorCodeIfs;
 
 @Getter
 public class ApiException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final ErrorCodeIfs errorCodeIfs;
     private final String errorMessage;
 
-    public ApiException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
-        this.errorMessage = errorCode.getMessage();
+    public ApiException(ErrorCodeIfs errorCodeIfs) {
+        super(errorCodeIfs.getMessage());
+        this.errorCodeIfs = errorCodeIfs;
+        this.errorMessage = errorCodeIfs.getMessage();
     }
 
-    public ApiException(ErrorCode errorCode, String errorMessage) {
+    public ApiException(ErrorCodeIfs errorCodeIfs, String errorMessage) {
         super(errorMessage);
-        this.errorCode = errorCode;
+        this.errorCodeIfs = errorCodeIfs;
         this.errorMessage = errorMessage;
     }
 
-    public ApiException(ErrorCode errorCode, Throwable t) {
+    public ApiException(ErrorCodeIfs errorCodeIfs, Throwable t) {
         super(t);
-        this.errorCode = errorCode;
-        this.errorMessage = errorCode.getMessage();
+        this.errorCodeIfs = errorCodeIfs;
+        this.errorMessage = errorCodeIfs.getMessage();
+    }
+
+    public ApiException(ErrorCodeIfs errorCodeIfs, Throwable t, String errorMessage) {
+        super(t);
+        this.errorCodeIfs = errorCodeIfs;
+        this.errorMessage = errorMessage;
     }
 }
