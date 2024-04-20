@@ -3,7 +3,7 @@ package org.delivery.common.api;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.delivery.common.error.ErrorCode;
+import org.delivery.common.error.ErrorCodeIfs;
 
 import javax.validation.Valid;
 
@@ -30,21 +30,21 @@ public class ApiResponse<T> {
         return apiResponse;
     }
 
-    public static ApiResponse<Object> Error(ErrorCode errorCode) {
+    public static ApiResponse<Object> Error(ErrorCodeIfs errorCodeIfs) {
         var apiResponse = new ApiResponse<Object>();
-        apiResponse.result = Result.Error(errorCode);
+        apiResponse.result = Result.Error(errorCodeIfs);
         return apiResponse;
     }
 
-    public static ApiResponse<Object> Error(ErrorCode errorCode, Throwable t) {
+    public static ApiResponse<Object> Error(ErrorCodeIfs errorCodeIfs, Throwable t) {
         var apiResponse = new ApiResponse<Object>();
-        apiResponse.result = Result.Error(errorCode, t);
+        apiResponse.result = Result.Error(errorCodeIfs, t);
         return apiResponse;
     }
 
-    public static ApiResponse<Object> Error(ErrorCode errorCode, String message) {
+    public static ApiResponse<Object> Error(ErrorCodeIfs errorCodeIfs, String message) {
         var apiResponse = new ApiResponse<Object>();
-        apiResponse.result = Result.Error(errorCode, message);
+        apiResponse.result = Result.Error(errorCodeIfs, message);
         return apiResponse;
     }
 }

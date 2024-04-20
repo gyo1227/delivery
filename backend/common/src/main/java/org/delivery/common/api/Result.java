@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.delivery.common.error.ErrorCode;
+import org.delivery.common.error.ErrorCodeIfs;
 
 @Data
 @NoArgsConstructor
@@ -22,23 +23,23 @@ public class Result {
                 .build();
     }
 
-    public static Result Error(ErrorCode errorCode) {
+    public static Result Error(ErrorCodeIfs errorCodeIfs) {
         return Result.builder()
-                .code(errorCode.getErrorCode())
-                .message(errorCode.getMessage())
+                .code(errorCodeIfs.getErrorCode())
+                .message(errorCodeIfs.getMessage())
                 .build();
     }
 
-    public static Result Error(ErrorCode errorCode, Throwable t) {
+    public static Result Error(ErrorCodeIfs errorCodeIfs, Throwable t) {
         return Result.builder()
-                .code(errorCode.getErrorCode())
+                .code(errorCodeIfs.getErrorCode())
                 .message(t.getLocalizedMessage())
                 .build();
     }
 
-    public static Result Error(ErrorCode errorCode, String message) {
+    public static Result Error(ErrorCodeIfs errorCodeIfs, String message) {
         return Result.builder()
-                .code(errorCode.getErrorCode())
+                .code(errorCodeIfs.getErrorCode())
                 .message(message)
                 .build();
     }
