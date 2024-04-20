@@ -1,0 +1,16 @@
+dependencies {
+    // spring web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
