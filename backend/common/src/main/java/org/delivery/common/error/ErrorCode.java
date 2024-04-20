@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum ErrorCode implements ErrorCodeIfs {
 
     OK(200, 200, "성공"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST.value(), 400, "잘못된 요청"),
