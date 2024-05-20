@@ -8,8 +8,16 @@ import org.delivery.db.user.UserEntity;
 import org.delivery.db.user.UserRepository;
 import org.delivery.db.user.enums.UserRole;
 import org.delivery.db.user.enums.UserStatus;
+import org.delivery.userapi.domain.token.model.TokenResponse;
+import org.delivery.userapi.domain.token.service.TokenService;
+import org.delivery.userapi.domain.user.controller.model.UserLoginRequest;
 import org.delivery.userapi.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.userapi.domain.user.controller.model.UserResponse;
+import org.delivery.userapi.domain.user.model.UserSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +31,12 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private final UserConverter userConverter;
     private final UserRepository userRepository;
+
+    private final TokenService tokenService;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
 
@@ -60,4 +71,31 @@ public class UserService {
 
         return response;
     }
+
+    public TokenResponse login(UserLoginRequest request) {
+        userRepository.findFirstByEmailOrderByIdDesc(request.getEmail())
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        var response = tokenService.issueToken(authentication);
+        return response;
+    }
+
+    public Optional<UserEntity> getRegisterUser(String email) {
+        return userRepository.findFirstByEmailAndStatusOrderByIdDesc(email, UserStatus.REGISTERED);
+    }
+
+    public UserResponse me(UserSession userSession) {
+        userRepository.findFirstByIdAndStatusOrderByIdDesc(userSession.getId(), UserStatus.REGISTERED)
+                .orElseThrow(() -> new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        return UserResponse.builder()
+                .id(userSession.getId())
+                .role(userSession.getRole())
+                .build();
+    }
+
 }

@@ -2,6 +2,8 @@ package org.delivery.userapi.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.common.api.ApiResponse;
+import org.delivery.userapi.domain.token.model.TokenResponse;
+import org.delivery.userapi.domain.user.controller.model.UserLoginRequest;
 import org.delivery.userapi.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.userapi.domain.user.controller.model.UserResponse;
 import org.delivery.userapi.domain.user.service.UserService;
@@ -26,4 +28,13 @@ public class UserOpenApiController {
         var response = userService.register(request);
         return ApiResponse.Ok(response);
     }
+
+    @PostMapping("/login")
+    public ApiResponse<TokenResponse> login(
+            @Valid @RequestBody UserLoginRequest request
+    ) {
+        var response = userService.login(request);
+        return ApiResponse.Ok(response);
+    }
+
 }
