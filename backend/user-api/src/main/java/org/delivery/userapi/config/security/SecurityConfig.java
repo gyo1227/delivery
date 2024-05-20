@@ -1,5 +1,8 @@
 package org.delivery.userapi.config.security;
 
+import lombok.RequiredArgsConstructor;
+import org.delivery.userapi.domain.token.service.TokenService;
+import org.delivery.userapi.filter.token.JwtFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,12 +11,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final TokenService tokenService;
 
     private final List<String> SWAGGER = List.of(
             "/swagger-ui.html",
@@ -37,7 +44,10 @@ public class SecurityConfig {
                 .permitAll()
                 // 그 외 모든 요청은 인증 사용
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and()
+                .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class)
+        ;
 
         return httpSecurity.build();
     }
