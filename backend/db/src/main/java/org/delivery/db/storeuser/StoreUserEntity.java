@@ -28,6 +28,9 @@ public class StoreUserEntity extends BaseEntity {
     private String password;
 
     @Column(length = 50, nullable = false)
+    private String name;
+
+    @Column(length = 50, nullable = false)
     @Enumerated(EnumType.STRING)
     private StoreUserStatus status;
 

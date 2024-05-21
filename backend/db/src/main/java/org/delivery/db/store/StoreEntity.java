@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 @Table(name = "store")
 public class StoreEntity extends BaseEntity {
 
+    @Column(nullable = false)
+    private Long userId;
+
     @Column(length = 100, nullable = false)
     private String name;
 
@@ -42,9 +45,6 @@ public class StoreEntity extends BaseEntity {
 
     @Column(precision = 11, scale = 4, nullable = false)
     private BigDecimal minimumAmount;
-
-    @Column(precision = 11, scale = 4, nullable = false)
-    private BigDecimal minimumDeliveryAmount;
 
     @Column(length = 20)
     private String phoneNumber;
