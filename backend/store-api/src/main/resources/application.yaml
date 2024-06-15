@@ -18,3 +18,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username:
     password:
+
+token:
+  secret:
+    key:
+  access-token:
+    plus-hour: 1
+  refresh-token:
+    plus-hour: 12
