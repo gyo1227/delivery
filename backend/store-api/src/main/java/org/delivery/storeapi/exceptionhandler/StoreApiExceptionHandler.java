@@ -19,7 +19,7 @@ public class StoreApiExceptionHandler {
     ) {
         log.error("", apiException);
 
-        var errorCode = apiException.getErrorCode();
+        var errorCode = apiException.getErrorCodeIfs();
 
         return ResponseEntity.status(errorCode.getHttpStatusCode())
                 .body(ApiResponse.Error(errorCode, apiException.getErrorMessage()));
