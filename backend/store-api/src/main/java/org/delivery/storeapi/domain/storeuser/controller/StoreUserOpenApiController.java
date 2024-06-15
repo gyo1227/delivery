@@ -2,9 +2,11 @@ package org.delivery.storeapi.domain.storeuser.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.common.api.ApiResponse;
+import org.delivery.storeapi.domain.storeuser.controller.model.StoreUserLoginRequest;
 import org.delivery.storeapi.domain.storeuser.controller.model.StoreUserRegisterRequest;
 import org.delivery.storeapi.domain.storeuser.controller.model.StoreUserResponse;
 import org.delivery.storeapi.domain.storeuser.service.StoreUserService;
+import org.delivery.storeapi.domain.token.model.TokenResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,14 @@ public class StoreUserOpenApiController {
             @Valid @RequestBody StoreUserRegisterRequest request
     ) {
         var response = storeUserService.register(request);
+        return ApiResponse.Ok(response);
+    }
+
+    @PostMapping("/login")
+    public ApiResponse<TokenResponse> login(
+            @Valid @RequestBody StoreUserLoginRequest request
+    ) {
+        var response = storeUserService.login(request);
         return ApiResponse.Ok(response);
     }
 }
