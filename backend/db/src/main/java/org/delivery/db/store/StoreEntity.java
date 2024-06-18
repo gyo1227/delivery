@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 public class StoreEntity extends BaseEntity {
 
     @Column(nullable = false)
-    private Long userId;
+    private Long ownerId;
 
     @Column(length = 100, nullable = false)
     private String name;
