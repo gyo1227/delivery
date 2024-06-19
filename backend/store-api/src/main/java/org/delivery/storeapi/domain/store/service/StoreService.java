@@ -28,11 +28,12 @@ public class StoreService {
         var entity = Optional.ofNullable(request)
                 .map(it -> {
                     return StoreEntity.builder()
-                            .userId(storeUserSession.getId())
+                            .ownerId(storeUserSession.getId())
                             .name(it.getName())
                             .address(it.getAddress())
                             .status(StoreStatus.CLOSE)
                             .category(it.getStoreCategory())
+                            .star(0)
                             .thumbnailUrl(it.getThumbnailUrl())
                             .minimumAmount(it.getMinimumAmount())
                             .phoneNumber(it.getPhoneNumber())
