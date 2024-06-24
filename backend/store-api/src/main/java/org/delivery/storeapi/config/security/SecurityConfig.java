@@ -2,6 +2,7 @@ package org.delivery.storeapi.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.storeapi.domain.token.service.TokenService;
+import org.delivery.storeapi.filter.token.JwtExceptionFilter;
 import org.delivery.storeapi.filter.token.JwtFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,7 @@ public class SecurityConfig {
                 .authenticated()
                 .and()
                 .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtFilter.class);
         ;
 
         return httpSecurity.build();

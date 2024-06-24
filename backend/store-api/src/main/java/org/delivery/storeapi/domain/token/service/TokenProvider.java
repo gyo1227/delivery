@@ -1,9 +1,6 @@
 package org.delivery.storeapi.domain.token.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import org.delivery.common.error.TokenErrorCode;
@@ -93,9 +90,7 @@ public class TokenProvider {
         try{
             var result = parser.parseClaimsJws(token);
             return new HashMap<String, Object>(result.getBody());
-
-        }catch (Exception e){
-
+        }catch (JwtException e){
             if(e instanceof SignatureException){
                 // 토큰이 유효하지 않을때
                 throw new ApiException(TokenErrorCode.INVALID_TOKEN, e);
