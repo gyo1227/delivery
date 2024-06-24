@@ -92,9 +92,7 @@ public class TokenProvider {
         try{
             var result = parser.parseClaimsJws(token);
             return new HashMap<String, Object>(result.getBody());
-
         }catch (Exception e){
-
             if(e instanceof SignatureException){
                 // 토큰이 유효하지 않을때
                 throw new ApiException(TokenErrorCode.INVALID_TOKEN, e);
