@@ -2,7 +2,6 @@ package org.delivery.storeapi.domain.storemenu.service;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.common.error.ErrorCode;
-import org.delivery.common.error.StoreUserErrorCode;
 import org.delivery.common.exception.ApiException;
 import org.delivery.db.store.StoreRepository;
 import org.delivery.db.storemenu.StoreMenuEntity;
@@ -29,17 +28,13 @@ public class StoreMenuService {
             StoreMenuRegisterRequest request,
             StoreUserSession storeUserSession
     ) {
-        var storeEntity = storeRepository.findFirstById(request.getStoreId())
+        var storeEntity = storeRepository.findFirstByIdAndOwnerId(request.getStoreId(), storeUserSession.getId())
                 .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT));
-
-        if(!storeEntity.getOwnerId().equals(storeUserSession.getId())) {
-            throw new ApiException(StoreUserErrorCode.NOT_STORE_ADMIN);
-        }
 
         var entity = Optional.ofNullable(request)
                 .map(it -> {
                     return StoreMenuEntity.builder()
-                            .storeId(it.getStoreId())
+                            .storeId(storeEntity.getId())
                             .name(it.getName())
                             .amount(it.getAmount())
                             .status(StoreMenuStatus.SOLD_OUT)

@@ -10,5 +10,5 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
 
     List<StoreEntity> findAllByCategoryOrderByStarDesc(StoreCategory category);
 
-    Optional<StoreEntity> findFirstById(Long id);
+    Optional<StoreEntity> findFirstByIdAndOwnerId(Long id, Long ownerId);
 }
