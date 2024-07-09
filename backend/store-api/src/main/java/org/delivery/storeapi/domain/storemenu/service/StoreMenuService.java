@@ -2,7 +2,6 @@ package org.delivery.storeapi.domain.storemenu.service;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.common.error.ErrorCode;
-import org.delivery.common.error.StoreUserErrorCode;
 import org.delivery.common.exception.ApiException;
 import org.delivery.db.store.StoreRepository;
 import org.delivery.db.storemenu.StoreMenuEntity;
