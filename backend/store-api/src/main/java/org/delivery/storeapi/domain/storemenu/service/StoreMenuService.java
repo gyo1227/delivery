@@ -29,7 +29,7 @@ public class StoreMenuService {
             StoreMenuRegisterRequest request,
             StoreUserSession storeUserSession
     ) {
-        var storeEntity = storeRepository.findFirstById(request.getStoreId())
+        var storeEntity = storeRepository.findFirstByIdAndOwnerId(request.getStoreId(), storeUserSession.getId())
                 .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT));
 
         if(!storeEntity.getOwnerId().equals(storeUserSession.getId())) {
