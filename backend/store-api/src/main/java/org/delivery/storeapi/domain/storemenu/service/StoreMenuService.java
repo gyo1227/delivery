@@ -32,14 +32,10 @@ public class StoreMenuService {
         var storeEntity = storeRepository.findFirstByIdAndOwnerId(request.getStoreId(), storeUserSession.getId())
                 .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT));
 
-        if(!storeEntity.getOwnerId().equals(storeUserSession.getId())) {
-            throw new ApiException(StoreUserErrorCode.NOT_STORE_ADMIN);
-        }
-
         var entity = Optional.ofNullable(request)
                 .map(it -> {
                     return StoreMenuEntity.builder()
-                            .storeId(it.getStoreId())
+                            .storeId(storeEntity.getId())
                             .name(it.getName())
                             .amount(it.getAmount())
                             .status(StoreMenuStatus.SOLD_OUT)
