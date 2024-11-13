@@ -1,10 +1,10 @@
-package co.kr.delivery;
+package co.kr.deliveryapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DeliveryApplicationTests {
+class DeliveryApiApplicationTests {
 
     @Test
     void contextLoads() {
