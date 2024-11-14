@@ -1,13 +1,13 @@
-package co.kr.deliverycommon;
+package co.kr.delivery.db;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DeliveryCommonApplicationTests {
+class DeliveryDbApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }

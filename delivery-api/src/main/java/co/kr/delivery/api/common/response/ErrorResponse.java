@@ -1,4 +1,4 @@
-package co.kr.deliveryapi.common.response;
+package co.kr.delivery.api.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.jetbrains.annotations.NotNull;

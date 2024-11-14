@@ -1,4 +1,4 @@
-package co.kr.deliverycommon.exception.consts;
+package co.kr.delivery.common.exception.consts;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,4 +1,4 @@
-package co.kr.deliverycommon.exception.consts;
+package co.kr.delivery.common.exception.consts;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

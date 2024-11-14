@@ -1,4 +1,4 @@
-package co.kr.deliverycommon.exception.consts;
+package co.kr.delivery.common.exception.consts;
 
 import java.util.Objects;
 import java.util.stream.Stream;

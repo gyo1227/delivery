@@ -1,9 +1,9 @@
-package co.kr.deliveryapi.common.response.handler;
+package co.kr.delivery.api.common.response.handler;
 
-import co.kr.deliverycommon.exception.GlobalException;
-import co.kr.deliverycommon.exception.consts.DetailCode;
-import co.kr.deliverycommon.exception.consts.StatusCode;
-import co.kr.deliveryapi.common.response.ErrorResponse;
+import co.kr.delivery.common.exception.GlobalException;
+import co.kr.delivery.common.exception.consts.DetailCode;
+import co.kr.delivery.common.exception.consts.StatusCode;
+import co.kr.delivery.api.common.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
