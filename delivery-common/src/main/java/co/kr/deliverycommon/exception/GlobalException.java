@@ -1,7 +1,7 @@
-package co.kr.deliveryapi.common.exception;
+package co.kr.deliverycommon.exception;
 
-import co.kr.deliveryapi.common.exception.consts.BaseErrorCode;
-import co.kr.deliveryapi.common.exception.consts.ErrorCode;
+import co.kr.deliverycommon.exception.consts.BaseErrorCode;
+import co.kr.deliverycommon.exception.consts.ErrorCode;
 import lombok.Getter;
 
 @Getter

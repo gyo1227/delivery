@@ -1,4 +1,4 @@
-package co.kr.deliveryapi.common.exception.consts;
+package co.kr.deliverycommon.exception.consts;
 
 public interface BaseErrorCode {
     ErrorCode errorCode();
