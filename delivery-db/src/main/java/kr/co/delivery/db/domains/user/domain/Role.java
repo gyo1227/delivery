@@ -1,4 +1,4 @@
-package kr.co.delivery.db.domains.user;
+package kr.co.delivery.db.domains.user.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
