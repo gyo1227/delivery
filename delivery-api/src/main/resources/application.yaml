@@ -1,3 +1,11 @@
 spring:
   profiles:
     include: db
+
+jwt:
+  secret-key:
+    access-token: ${JWT_ACCESS_TOKEN_SECRET_KEY:SecretKeyForAccessTokenForDevelopingDeliveryApi}
+    refresh-token: ${JWT_REFRESH_TOKEN_SECRET_KEY:SecretKeyForRefreshTokenForDevelopingDeliveryApi}
+  expiration-time:
+    access-token: ${JWT_ACCESS_TOKEN_EXPIRATION_TIME:1800000} # 30m
+    refresh-token: ${JWT_REFRESH_TOKEN_EXPIRATION_TIME:604800000}  # 7d

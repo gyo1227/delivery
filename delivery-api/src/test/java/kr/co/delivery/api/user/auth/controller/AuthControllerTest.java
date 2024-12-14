@@ -3,10 +3,14 @@ package kr.co.delivery.api.user.auth.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.delivery.api.common.exception.UserErrorException;
 import kr.co.delivery.api.common.exception.enums.UserErrorCode;
+import kr.co.delivery.api.common.security.jwt.Jwts;
+import kr.co.delivery.api.common.util.CookieUtil;
+import kr.co.delivery.api.user.auth.controller.dto.SignInReq;
 import kr.co.delivery.api.user.auth.controller.dto.SignUpReq;
 import kr.co.delivery.api.user.auth.service.UserService;
 import kr.co.delivery.common.exception.consts.StatusCode;
 import kr.co.delivery.db.domains.user.domain.UserEntity;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,18 +18,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Duration;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
@@ -35,6 +42,9 @@ class AuthControllerTest {
 
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private CookieUtil cookieUtil;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -186,6 +196,85 @@ class AuthControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.data.email").value("test@test.com"))
                     .andExpect(jsonPath("$.data.nickname").value("test"))
+                    .andDo(print());
+        }
+    }
+
+    @DisplayName("유저 로그인")
+    @Nested
+    class signInUser {
+
+        @DisplayName("[1] - 이메일, 비밀번호 필수 입력")
+        @Test
+        void test1() throws Exception {
+            // given
+            final SignInReq request = new SignInReq("", "");
+
+            // when
+            final ResultActions resultActions = mockMvc.perform(
+                    post("/v1/auth/user/sign-in")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+            );
+
+            // then
+            resultActions
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.code").value("4220"))
+                    .andExpect(jsonPath("$.message").value(StatusCode.UNPROCESSABLE_CONTENT.name()))
+                    .andExpect(jsonPath("$.fieldErrors.email").exists())
+                    .andExpect(jsonPath("$.fieldErrors.password").exists())
+                    .andDo(print());
+        }
+
+        @DisplayName("[2] - 로그인 실패")
+        @Test
+        void test2() throws Exception {
+            // given
+            SignInReq request = new SignInReq("test@email.com", "tqwefqef!");
+            given(userService.signIn(any(SignInReq.class)))
+                    .willThrow(new UserErrorException(UserErrorCode.INVALID_EMAIL_OR_PASSWORD));
+
+            // when
+            final ResultActions resultActions = mockMvc.perform(
+                    post("/v1/auth/user/sign-in")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+            );
+
+            // then
+            resultActions
+                    .andExpect(status().isUnauthorized())
+                    .andExpect(jsonPath("$.code").value("4010"))
+                    .andExpect(jsonPath("$.message").value(UserErrorCode.INVALID_EMAIL_OR_PASSWORD.errorMessage()))
+                    .andDo(print());
+        }
+
+        @DisplayName("[3] - 로그인 성공")
+        @Test
+        void test3() throws Exception {
+            // given
+            SignInReq request = new SignInReq("test@email.com", "test1234!");
+            ResponseCookie expectedCookie = ResponseCookie.from("refreshToken", "refreshToken")
+                    .maxAge(Duration.ofDays(7).toSeconds()).httpOnly(true).path("/").build();
+
+            given(userService.signIn(request))
+                    .willReturn(Pair.of(1L, Jwts.of("accessToken", "refreshToken")));
+            given(cookieUtil.createCookie("refreshToken", "refreshToken", Duration.ofDays(7).toSeconds()))
+                    .willReturn(expectedCookie);
+
+            // when
+            ResultActions resultActions = mockMvc.perform(
+                    post("/v1/auth/user/sign-in")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+            );
+
+            // then
+            resultActions
+                    .andExpect(status().isOk())
+                    .andExpect(header().exists("Set-Cookie"))
+                    .andExpect(header().string("Authorization", "accessToken"))
                     .andDo(print());
         }
     }

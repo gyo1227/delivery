@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserErrorCode implements BaseErrorCode {
 
+    // 401 UNAUTHORIZED
+    INVALID_EMAIL_OR_PASSWORD(StatusCode.UNAUTHORIZED, DetailCode.INVALID_AUTHENTICATION_CREDENTIALS, "유효하지 않은 이메일 또는 비밀번호입니다"),
+
     // 409 CONFLICT
     ALREADY_EXIST_EMAIL(StatusCode.CONFLICT, DetailCode.RESOURCE_ALREADY_EXISTS, "이미 존재하는 이메일입니다")
     ;
