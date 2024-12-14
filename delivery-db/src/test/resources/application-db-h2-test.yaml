@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:mem:delivery_test;DB_CLOSE_DELAY=-1;MODE=MYSQL;TIME ZONE=UTC;NON_KEYWORDS=USER
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: h2
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+    show-sql: true
