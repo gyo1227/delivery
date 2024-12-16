@@ -6,6 +6,8 @@ import kr.co.delivery.api.common.security.jwt.RefreshTokenProvider;
 import kr.co.delivery.api.common.security.jwt.TokenClaim;
 import kr.co.delivery.api.config.fixture.UserFixture;
 import kr.co.delivery.db.domains.user.domain.UserEntity;
+import kr.co.delivery.db.redis.KeyType;
+import kr.co.delivery.db.redis.RefreshTokenRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class JwtServiceTest {
@@ -29,6 +32,9 @@ class JwtServiceTest {
 
     @Mock
     private RefreshTokenProvider refreshTokenProvider;
+
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
 
     @DisplayName("토큰 생성")
     @Test
@@ -48,5 +54,6 @@ class JwtServiceTest {
         assertNotNull(result);
         assertEquals(expectedAccessToken, result.accessToken());
         assertEquals(expectedRefreshToken, result.refreshToken());
+        then(refreshTokenRepository).should().save(KeyType.USER, userEntity.getId(), expectedRefreshToken);
     }
 }
