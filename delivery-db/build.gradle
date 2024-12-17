@@ -8,6 +8,7 @@ dependencies {
     testImplementation 'com.h2database:h2'
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mysql'
 }
 
 bootJar {
