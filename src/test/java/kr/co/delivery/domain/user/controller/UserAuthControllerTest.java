@@ -1,6 +1,7 @@
 package kr.co.delivery.domain.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.delivery.common.config.security.SecurityConfig;
 import kr.co.delivery.common.exception.enums.ReasonCode;
 import kr.co.delivery.common.exception.enums.StatusCode;
 import kr.co.delivery.domain.user.dto.UserSignupRequest;
@@ -8,18 +9,16 @@ import kr.co.delivery.domain.user.dto.UserSignupResponse;
 import kr.co.delivery.domain.user.exception.UserException;
 import kr.co.delivery.domain.user.exception.enums.UserErrorCode;
 import kr.co.delivery.domain.user.service.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 
@@ -30,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Import(SecurityConfig.class)
 @WebMvcTest(UserAuthController.class)
 class UserAuthControllerTest {
 
@@ -41,13 +41,6 @@ class UserAuthControllerTest {
 
     @MockitoBean
     UserService userService;
-
-    @BeforeEach
-    void setUp(WebApplicationContext webApplicationContext) {
-        this.mockMvc = MockMvcBuilders
-                .webAppContextSetup(webApplicationContext)
-                .build();
-    }
 
     @DisplayName("유저 회원가입")
     @Nested
