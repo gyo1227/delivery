@@ -45,26 +45,31 @@ class UserAuthControllerTest {
     @DisplayName("유저 회원가입")
     @Nested
     class UserSignup {
+
+        final String validationErrorCode =  String.valueOf(
+                StatusCode.BAD_REQUEST.getCode() * 10 + ReasonCode.REQUIRED_PARAMETER_VALIDATION_ERROR.getCode());
+
+        private ResultActions performSignup(UserSignupRequest request) throws Exception {
+            return mockMvc.perform(
+                    post("/api/auth/user/sign-up")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+            );
+        }
+
         @DisplayName("[1] - 필수 입력 값 누락 시 400 BAD_REQUEST 및 필드 에러 메시지를 반환한다.")
         @Test
         void test1() throws Exception {
             // given
             final UserSignupRequest request = new UserSignupRequest("", "", "", "");
 
-            String code = String.valueOf(
-                    StatusCode.BAD_REQUEST.getCode() * 10 + ReasonCode.REQUIRED_PARAMETER_VALIDATION_ERROR.getCode());
-
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").value(code))
+                    .andExpect(jsonPath("$.code").value(validationErrorCode))
                     .andExpect(jsonPath("$.message").value("입력값이 올바르지 않습니다. 각 항목을 확인해주세요."))
                     .andExpect(jsonPath("$.data.email").exists())
                     .andExpect(jsonPath("$.data.password").exists())
@@ -79,20 +84,13 @@ class UserAuthControllerTest {
             // given
             final UserSignupRequest request = new UserSignupRequest("errorEmail", "test1234!", "test", "01012341234");
 
-            String code = String.valueOf(
-                    StatusCode.BAD_REQUEST.getCode() * 10 + ReasonCode.REQUIRED_PARAMETER_VALIDATION_ERROR.getCode());
-
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").value(code))
+                    .andExpect(jsonPath("$.code").value(validationErrorCode))
                     .andExpect(jsonPath("$.message").value("입력값이 올바르지 않습니다. 각 항목을 확인해주세요."))
                     .andDo(print());
         }
@@ -103,20 +101,13 @@ class UserAuthControllerTest {
             // given
             final UserSignupRequest request = new UserSignupRequest("test@email.com", "errorpassword", "test", "01012341234");
 
-            String code = String.valueOf(
-                    StatusCode.BAD_REQUEST.getCode() * 10 + ReasonCode.REQUIRED_PARAMETER_VALIDATION_ERROR.getCode());
-
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").value(code))
+                    .andExpect(jsonPath("$.code").value(validationErrorCode))
                     .andExpect(jsonPath("$.message").value("입력값이 올바르지 않습니다. 각 항목을 확인해주세요."))
                     .andExpect(jsonPath("$.data.password").value("8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해주세요. (적어도 하나의 영문 소문자, 숫자 포함)"))
                     .andDo(print());
@@ -128,20 +119,13 @@ class UserAuthControllerTest {
             // given
             final UserSignupRequest request = new UserSignupRequest("test@email.com", "test1234!", "errorname@$$@", "01012341234");
 
-            String code = String.valueOf(
-                    StatusCode.BAD_REQUEST.getCode() * 10 + ReasonCode.REQUIRED_PARAMETER_VALIDATION_ERROR.getCode());
-
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").value(code))
+                    .andExpect(jsonPath("$.code").value(validationErrorCode))
                     .andExpect(jsonPath("$.message").value("입력값이 올바르지 않습니다. 각 항목을 확인해주세요."))
                     .andExpect(jsonPath("$.data.name").value("한글과 영문 대, 소문자만 가능합니다."))
                     .andDo(print());
@@ -153,20 +137,13 @@ class UserAuthControllerTest {
             // given
             final UserSignupRequest request = new UserSignupRequest("test@email.com", "test1234!", "test", "010323");
 
-            String code = String.valueOf(
-                    StatusCode.BAD_REQUEST.getCode() * 10 + ReasonCode.REQUIRED_PARAMETER_VALIDATION_ERROR.getCode());
-
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.code").value(code))
+                    .andExpect(jsonPath("$.code").value(validationErrorCode))
                     .andExpect(jsonPath("$.message").value("입력값이 올바르지 않습니다. 각 항목을 확인해주세요."))
                     .andExpect(jsonPath("$.data.phone").value("휴대전화 번호 형식이 올바르지 않습니다. (숫자만 입력해주세요)"))
                     .andDo(print());
@@ -181,14 +158,10 @@ class UserAuthControllerTest {
                     .willThrow(new UserException(UserErrorCode.ALREADY_EXIST_EMAIL));
 
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isConflict())
                     .andExpect(jsonPath("$.code").value("4090"))
                     .andExpect(jsonPath("$.message").value(UserErrorCode.ALREADY_EXIST_EMAIL.errorMessage()))
@@ -205,14 +178,10 @@ class UserAuthControllerTest {
                     .willThrow(new UserException(UserErrorCode.ALREADY_EXIST_PHONE));
 
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isConflict())
                     .andExpect(jsonPath("$.code").value("4090"))
                     .andExpect(jsonPath("$.message").value(UserErrorCode.ALREADY_EXIST_PHONE.errorMessage()))
@@ -229,14 +198,10 @@ class UserAuthControllerTest {
             given(userService.signup(any(UserSignupRequest.class))).willReturn(response);
 
             // when
-            final ResultActions resultActions = mockMvc.perform(
-                    post("/api/auth/user/sign-up")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(request))
-            );
+            ResultActions performSignup = performSignup(request);
 
             // then
-            resultActions
+            performSignup
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.code").value("2000"))
                     .andExpect(jsonPath("$.message").value("회원가입이 완료되었습니다."))

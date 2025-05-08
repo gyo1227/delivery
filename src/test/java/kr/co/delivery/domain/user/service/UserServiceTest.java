@@ -42,13 +42,13 @@ class UserServiceTest {
         String name = "test";
         String phone = "01012341234";
 
+        UserSignupRequest request = new UserSignupRequest(email, password, name, phone);
+        User mockUser = mock(User.class);
+
         @DisplayName("[1] - 이미 가입된 이메일로 회원가입 시 UserException이 발생한다.")
         @Test
         void test1() throws Exception {
             // given
-            UserSignupRequest request = new UserSignupRequest(email, password, name, phone);
-            User mockUser = mock(User.class);
-
             given(userJpaRepository.findByEmail(request.email()))
                     .willReturn(Optional.of(mockUser));
 
@@ -61,9 +61,6 @@ class UserServiceTest {
         @Test
         void test2() throws Exception {
             // given
-            UserSignupRequest request = new UserSignupRequest(email, password, name, phone);
-            User mockUser = mock(User.class);
-
             given(userJpaRepository.findByEmail(request.email()))
                     .willReturn(Optional.empty());
             given(userJpaRepository.findByPhone(request.phone()))
@@ -78,8 +75,6 @@ class UserServiceTest {
         @Test
         void test3() throws Exception {
             // given
-            UserSignupRequest request = new UserSignupRequest(email, password, name, phone);
-
             given(userJpaRepository.findByEmail(request.email()))
                     .willReturn(Optional.empty());
             given(userJpaRepository.findByPhone(request.phone()))
