@@ -1,6 +1,5 @@
 package com.example.delivery.domain.user.entity;
 
-import com.example.delivery.domain.store.entity.Store;
 import com.example.delivery.domain.user.entity.enums.UserRole;
 import com.example.delivery.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -8,9 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
