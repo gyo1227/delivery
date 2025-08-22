@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         log.error("{} handle exception : {} ", e.getClass().getSimpleName(), e.getMessage());
 
         int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
-        String code = String.valueOf(status +  ReasonCode.UNEXPECTED_ERROR.getCode());
+        String code = String.valueOf(status * 10 + ReasonCode.UNEXPECTED_ERROR.getCode());
 
         return ResponseEntity
                 .status(status)
