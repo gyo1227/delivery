@@ -12,6 +12,6 @@ public record ErrorCode(
     }
 
     public String getErrorCode() {
-        return String.valueOf(httpStatus.value() + reasonCode.getCode());
+        return String.valueOf(httpStatus.value() * 10 + reasonCode.getCode());
     }
 }
