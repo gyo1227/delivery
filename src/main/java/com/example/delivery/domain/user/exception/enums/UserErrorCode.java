@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum UserErrorCode implements ApiError {
 
+    ALREADY_EXIST_EMAIL(HttpStatus.CONFLICT, ReasonCode.RESOURCE_ALREADY_EXISTS, "이미 등록된 이메일입니다."),
     ;
 
     private final HttpStatus httpStatus;
