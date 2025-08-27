@@ -1,15 +1,14 @@
 package com.example.delivery.domain.user.entity;
 
+import com.example.delivery.domain.user.dto.SignupRequest;
 import com.example.delivery.domain.user.entity.enums.UserRole;
 import com.example.delivery.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Entity
@@ -32,4 +31,13 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
+
+    public static User from(SignupRequest request, PasswordEncoder passwordEncoder) {
+        return User.builder()
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
+                .nickname(request.nickname())
+                .role(UserRole.USER)
+                .build();
+    }
 }
